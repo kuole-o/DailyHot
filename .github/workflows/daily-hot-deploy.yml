@@ -21,6 +21,10 @@ jobs:
       run: |
         npm install
 
+    - name: Build DailyHot
+      run: |
+        npm run build
+
     - name: Install tencent cloud coscmd
       run: |
         sudo pip install coscmd
