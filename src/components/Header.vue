@@ -58,6 +58,16 @@
           </n-popover>
           <n-popover>
             <template #trigger>
+              <n-button secondary strong round @click="openGuoleFun">
+                <template #icon>
+                  <n-icon :component="Home" />
+                </template>
+              </n-button>
+            </template>
+            回到主页
+          </n-popover>
+          <n-popover>
+            <template #trigger>
               <n-button secondary strong round @click="router.push('/setting')">
                 <template #icon>
                   <n-icon :component="SettingTwo" />
@@ -92,6 +102,7 @@ import {
   SunOne,
   Moon,
   Refresh,
+  Home,
   SettingTwo,
   HamburgerButton,
 } from "@icon-park/vue-next";
@@ -104,6 +115,10 @@ const router = useRouter();
 const store = mainStore();
 
 const timeInterval = ref(null);
+
+const openGuoleFun = () => {
+  window.location.href = 'https://guole.fun/';
+};
 
 // 移动端时间模块
 const timeRender = () => {
@@ -174,6 +189,15 @@ const menuOptions = [
     },
   },
   {
+    label: "回到主页",
+    key: "home",
+    icon: () => {
+      return h(NIcon, null, {
+        default: () => h(Home),
+      });
+    },
+  },
+  {
     label: "全局设置",
     key: "setting",
     icon: () => {
@@ -192,6 +216,8 @@ const menuOptionsSelect = (val) => {
     store.setSiteTheme(store.siteTheme === "light" ? "dark" : "light");
   } else if (val === "setting") {
     router.push("/setting");
+  } else if (val === "home") {
+    window.location.href = 'https://guole.fun/';
   }
 };
 
