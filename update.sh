@@ -1,5 +1,5 @@
 #!/bin/bash
-echo -e "\033[0;32mDeploying updates to guole.fun...\033[0m"
+echo -e "\033[0;32mDeploying updates to hot.guole.fun...\033[0m"
 
 cd d:/src/dailyhot
 
