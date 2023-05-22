@@ -92,7 +92,7 @@ export const mainStore = defineStore("main", {
   actions: {
     // 更改系统主题
     setSiteTheme(val) {
-      $message.info(`已切换至${val === "dark" ? "深色模式" : "浅色模式"}`, {
+      $message.info(`您已切换为${val === "dark" ? "深色模式 🌙🌙" : "浅色模式 ⛱️⛱️"}`, {
         showIcon: false,
       });
       this.siteTheme = val;
