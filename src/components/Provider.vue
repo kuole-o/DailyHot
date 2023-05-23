@@ -51,6 +51,12 @@ watch(
   () => store.siteTheme,
   () => {
     changeTheme();
+    // 设置 iOS 状态栏颜色
+    var div = document.querySelector('.n-layout');
+    var themeColor = window.getComputedStyle(div).backgroundColor;
+    console.log('当前的背景色是：' + themeColor)
+    let statusBarMeta = document.querySelector('#status-bar-meta');
+    statusBarMeta.setAttribute('content', themeColor);
   }
 );
 
