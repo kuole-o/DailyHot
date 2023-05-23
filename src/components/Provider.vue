@@ -36,13 +36,25 @@ import { mainStore } from "@/store";
 
 const store = mainStore();
 
+let statusBarMeta = null;
+
+onMounted(() => {
+  statusBarMeta = document.querySelector('#status-bar-meta');
+});
+
 // 明暗切换
 let theme = ref(null);
 const changeTheme = () => {
   if (store.siteTheme === "light") {
     theme.value = null;
+    if (statusBarMeta) {
+      statusBarMeta.setAttribute('content', 'rgb(250, 250, 252)');
+    }
   } else if (store.siteTheme === "dark") {
     theme.value = darkTheme;
+    if (statusBarMeta) {
+      statusBarMeta.setAttribute('content', 'rgb(16, 16, 20)');
+    }
   }
 };
 
@@ -51,12 +63,6 @@ watch(
   () => store.siteTheme,
   () => {
     changeTheme();
-    // 设置 iOS 状态栏颜色
-    var div = document.querySelector('.n-layout');
-    var themeColor = window.getComputedStyle(div).backgroundColor;
-    console.log('当前的背景色是：' + themeColor)
-    let statusBarMeta = document.querySelector('#status-bar-meta');
-    statusBarMeta.setAttribute('content', themeColor);
   }
 );
 
