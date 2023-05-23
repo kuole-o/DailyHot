@@ -36,8 +36,8 @@ import { mainStore } from "@/store";
 
 const store = mainStore();
 
+// 确保 `statusBarMeta` 变量在元素初始化后才被赋值，避免了传递错误的参数。
 let statusBarMeta = null;
-
 onMounted(() => {
   statusBarMeta = document.querySelector('#status-bar-meta');
 });
