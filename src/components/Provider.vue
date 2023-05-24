@@ -48,12 +48,16 @@ const changeTheme = () => {
   if (store.siteTheme === "light") {
     theme.value = null;
     if (statusBarMeta) {
-      statusBarMeta.setAttribute('content', 'rgb(250, 250, 252)');
+      setTimeout(function () {
+        statusBarMeta.setAttribute('content', 'rgb(250, 250, 252)');
+      }, 200);
     }
   } else if (store.siteTheme === "dark") {
     theme.value = darkTheme;
     if (statusBarMeta) {
-      statusBarMeta.setAttribute('content', 'rgb(16, 16, 20)');
+      setTimeout(function () {
+        statusBarMeta.setAttribute('content', 'rgb(16, 16, 20)');
+      }, 200);
     }
   }
 };
