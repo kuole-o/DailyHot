@@ -11,9 +11,9 @@
     <n-loading-bar-provider>
       <n-dialog-provider>
         <n-notification-provider>
-          <n-message-provider>
-            <NaiveProviderContent />
+          <n-message-provider :max="1">
             <slot></slot>
+            <NaiveProviderContent />
           </n-message-provider>
         </n-notification-provider>
       </n-dialog-provider>
@@ -35,6 +35,7 @@ import {
 import { mainStore } from "@/store";
 
 const store = mainStore();
+const osThemeRef = useOsTheme();
 
 // 确保 `statusBarMeta` 变量在元素初始化后才被赋值，避免了传递错误的参数。
 let statusBarMeta = null;
@@ -62,6 +63,13 @@ const changeTheme = () => {
   }
 };
 
+// 根据系统决定明暗切换
+const osThemeChange = (val) => {
+  if (store.siteThemeAuto) {
+    val == "dark" ? (store.siteTheme = "dark") : (store.siteTheme = "light");
+  }
+};
+
 // 监听明暗变化
 watch(
   () => store.siteTheme,
@@ -71,11 +79,10 @@ watch(
 );
 
 // 监听系统明暗变化
-const osThemeRef = useOsTheme();
 watch(
   () => osThemeRef.value,
-  (value) => {
-    value == "dark" ? store.setSiteTheme("dark") : store.setSiteTheme("light");
+  (val) => {
+    osThemeChange(val);
   }
 );
 
@@ -112,5 +119,6 @@ const NaiveProviderContent = defineComponent({
 
 onMounted(() => {
   changeTheme();
+  osThemeChange(osThemeRef.value);
 });
 </script>

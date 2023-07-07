@@ -25,7 +25,7 @@
       </div>
       <div class="controls">
         <n-space justify="end">
-          <n-popover>
+          <n-popover v-if="showRefresh">
             <template #trigger>
               <n-button secondary strong round @click="router.go(0)">
                 <template #icon>
@@ -113,8 +113,8 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const store = mainStore();
-
 const timeInterval = ref(null);
+const showRefresh = ref(false);
 
 const openGuoleFun = () => {
   window.location.href = 'https://guole.fun/';
@@ -221,10 +221,20 @@ const menuOptionsSelect = (val) => {
   }
 };
 
+// 监听路由参数变化
+watch(
+  () => router.currentRoute.value,
+  (val) => {
+    const isHome = val.path === "/";
+    showRefresh.value = isHome ? true : false;
+  }
+);
+
 onMounted(() => {
   window.$timeInterval = timeInterval.value = setInterval(() => {
     store.timeData = getCurrentTime();
   }, 1000);
+  showRefresh.value = router.currentRoute.value?.path === "/" ? true : false;
 });
 
 onBeforeUnmount(() => {
