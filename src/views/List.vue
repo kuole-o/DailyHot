@@ -90,17 +90,30 @@
                 </template>
                 <div class="text">
                   <n-text class="title" v-html="item.title" />
-                  <n-text
+                  <!-- <n-text
                     v-if="item.desc"
                     class="desc"
                     :depth="3"
                     v-html="item.desc"
-                  />
+                  /> -->
                 </div>
                 <div class="message">
-                  <div class="hot" v-if="item.hot">
+                  <div class="hot">
                     <n-icon :depth="3" :component="Fire" />
-                    <n-text class="hot-text" :depth="3" v-html="item.hot" />
+                    <n-text class="hot-num" :depth="3" v-html="item.num" />
+                    <n-text :class="{
+                      'hot-text': true,
+                      'new': item.hot === '新',
+                      'film': item.hot === '影',
+                      'tv': item.hot === '剧',
+                      'zong': item.hot === '综',
+                      'music': item.hot === '音',
+                      'boom': item.hot === '爆',
+                      'hot': item.hot === '热',
+                      'fei': item.hot === '沸',
+                      'warm': item.hot === '暖',
+                    }" :depth="3" v-html="item.hot" />
+
                   </div>
                 </div>
               </n-list-item>
@@ -373,6 +386,87 @@ onMounted(() => {
           .hot-text {
             margin-left: 4px;
             line-height: 0;
+          }
+          .hot-text.new {
+            background-color: #ff3852;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
+          }
+          .hot-text.warm {
+            background-color: #ffab5a;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
+          }
+          .hot-text.film {
+            background-color: #3e778a;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
+          }
+          .hot-text.tv {
+            background-color: #837600;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
+          }
+          .hot-text.zong {
+            background-color: #ffc000;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
+          }
+          .hot-text.music {
+            background-color: #f9455c;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
+          }
+          .hot-text.boom {
+            background-color: #c50000;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
+          }
+          .hot-text.hot {
+            background-color: #ff9406;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
+          }
+          .hot-text.fei {
+            background-color: #c50000;
+            color: #fff;
+            font-size: 12px;
+            padding: 9px 3px;
+            border-radius: 4px;
+            left: 4px;
+            position: relative;
           }
         }
       }
