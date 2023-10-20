@@ -9,14 +9,14 @@ export const mainStore = defineStore("main", {
       // 新闻类别
       newsArr: [
         {
-          label: "哔哩哔哩",
-          value: "bilibili",
+          label: "微博",
+          value: "weibo",
           order: 0,
           show: true,
         },
         {
-          label: "微博",
-          value: "weibo",
+          label: "哔哩哔哩",
+          value: "bilibili",
           order: 1,
           show: true,
         },
