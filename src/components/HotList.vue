@@ -164,20 +164,20 @@ const getHotListsData = (type, isNew = false) => {
         $message.error(res.title + res.message);
       }
     })
-    .catch((error) => {
-      console.error("资源请求失败：" + error);
-      switch (error?.response.status) {
-        case 403:
-          router.push("/403");
-          break;
-        case 500:
-          router.push("/500");
-          break;
-        default:
-          router.push("/404");
-          break;
-      }
-    });
+    // .catch((error) => {
+    //   console.error("资源请求失败：" + error);
+    //   switch (error?.response.status) {
+    //     case 403:
+    //       router.push("/403");
+    //       break;
+    //     case 500:
+    //       router.push("/500");
+    //       break;
+    //     default:
+    //       router.push("/404");
+    //       break;
+    //   }
+    // });
 };
 
 // 获取最新数据
