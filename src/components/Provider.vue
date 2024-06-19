@@ -37,29 +37,13 @@ import { mainStore } from "@/store";
 const store = mainStore();
 const osThemeRef = useOsTheme();
 
-// 确保 `statusBarMeta` 变量在元素初始化后才被赋值，避免了传递错误的参数。
-let statusBarMeta = null;
-onMounted(() => {
-  statusBarMeta = document.querySelector('#status-bar-meta');
-});
-
 // 明暗切换
 let theme = ref(null);
 const changeTheme = () => {
   if (store.siteTheme === "light") {
     theme.value = null;
-    if (statusBarMeta) {
-      setTimeout(function () {
-        statusBarMeta.setAttribute('content', 'rgb(250, 250, 252)');
-      }, 200);
-    }
   } else if (store.siteTheme === "dark") {
     theme.value = darkTheme;
-    if (statusBarMeta) {
-      setTimeout(function () {
-        statusBarMeta.setAttribute('content', 'rgb(16, 16, 20)');
-      }, 200);
-    }
   }
 };
 
