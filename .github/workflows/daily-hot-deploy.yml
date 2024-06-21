@@ -41,3 +41,8 @@ jobs:
     - name: upload tencent cloud COS
       run: |
         coscmd upload -rfs --delete ./dist/ /
+
+    - name: Call API and log response
+      run: |
+        response=$(curl -X GET -H "token: ${{ secrets.API_TOKEN }}" ${{ secrets.CDN_CACHE_REFRESH_API }}?url=https://hot.guole.fun/*)
+        echo "$response"
