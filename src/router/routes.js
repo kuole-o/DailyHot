@@ -1,3 +1,8 @@
+// import Vue from 'vue';
+// import VueRouter from 'vue-router';
+
+// Vue.use(VueRouter);
+
 const routes = [
   // 首页
   {
@@ -34,6 +39,14 @@ const routes = [
       title: "test",
     },
     component: () => import("@/views/Test.vue"),
+  },
+  // 清空缓存
+  {
+    path: "/clearCache",
+    name: "clearCache",
+    meta: {
+      title: "清空缓存",
+    },
   },
   // 403
   {

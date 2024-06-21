@@ -127,16 +127,32 @@
     <n-card class="set-item">
       <div class="top">
         <div class="name">
-          <n-text class="text">重置所有数据</n-text>
+          <n-text class="text">重置配置项</n-text>
           <n-text class="tip" :depth="3">
-            重置所有数据，你的自定义设置都将会丢失
+            重置所有配置项，您的自定义设置都将丢失
           </n-text>
         </div>
         <n-popconfirm @positive-click="reset">
           <template #trigger>
             <n-button type="warning"> 重置 </n-button>
           </template>
-          确认重置所有数据？你的自定义设置都将会丢失！
+          确认重置所有数据？
+        </n-popconfirm>
+      </div>
+    </n-card>
+    <n-card class="set-item">
+      <div class="top">
+        <div class="name">
+          <n-text class="text">清空本地缓存</n-text>
+          <n-text class="tip" :depth="3">
+            主动清空缓存可解决一些特定异常问题
+          </n-text>
+        </div>
+        <n-popconfirm @positive-click="clearCache">
+          <template #trigger>
+            <n-button type="primary"> 清空 </n-button>
+          </template>
+          确认清空本地缓存吗？
         </n-popconfirm>
       </div>
     </n-card>
@@ -209,7 +225,38 @@ const saveSoreData = (name = null, open = false) => {
 const reset = () => {
   if (typeof $timeInterval !== "undefined") clearInterval($timeInterval);
   localStorage.clear();
-  location.reload();
+  showSuccessNotification("重置配置项成功，页面即将刷新…");
+  setTimeout(() => {
+    location.reload();
+  }, 3000);
+};
+
+// 清空缓存
+const clearCache = async () => {
+  const cacheNames = await caches.keys();
+
+  if (cacheNames.length === 0) {
+    showWarningNotification("本地缓存数据为空，无需清理");
+    return;
+  }
+
+  await Promise.all(
+    cacheNames.map(async (cacheName) => {
+      await caches.delete(cacheName);
+      console.log(`以下缓存已清空：${cacheName}`);
+    })
+  );
+  showSuccessNotification("清空本地缓存成功");
+};
+
+// Success notification method
+const showSuccessNotification = (message) => {
+  $message.success(message);
+};
+
+// Warning notification method
+const showWarningNotification = (message) => {
+  $message.warning(message);
 };
 </script>
 
