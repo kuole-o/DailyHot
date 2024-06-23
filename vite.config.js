@@ -52,11 +52,11 @@ export default defineConfig(({ mode }) => {
         },
         manifest: {
           name: "每日热搜",
-          short_name: "DailyHot",
-          description: "汇聚全网热点",
+          short_name: "每日热搜",
+          description: "全网热点一览无余",
           display: "standalone",
           start_url: "/",
-          theme_color: "#fff",
+          theme_color: "rgb(250 250 252)",
           background_color: "#efefef",
           icons: [
             {
