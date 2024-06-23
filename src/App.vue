@@ -47,12 +47,12 @@ const setStatusBarColor = (theme) => {
   const element = document.getElementById("status-bar-meta");
   if (theme && element) {
     if (theme === "light") {
-      element.style.color = "rgb(250 250 252)";
+      element.content = "rgb(250 250 252)";
     } else if (theme === "dark" && element) {
-      element.style.color = "rgb(16 16 20)";
+      element.content = "rgb(16 16 20)";
     }
     console.log("theme为：",theme)
-    console.log("已设置状态栏颜色为：", element.style.color)
+    console.log("已设置状态栏颜色为：", element.content)
   }
 };
 
