@@ -383,9 +383,9 @@ onMounted(() => {
 
           .hot-text {
             margin-left: 10px;
-            line-height: 1.5;
             position: relative;
             padding: 2px 4px;
+            display: flex;
             border-radius: 4px;
           }
 

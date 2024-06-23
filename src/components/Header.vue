@@ -188,15 +188,15 @@ const menuOptions = [
       });
     },
   },
-  {
-    label: "回到主页",
-    key: "home",
-    icon: () => {
-      return h(NIcon, null, {
-        default: () => h(Home),
-      });
-    },
-  },
+  // {
+  //   label: "回到主页",
+  //   key: "home",
+  //   icon: () => {
+  //     return h(NIcon, null, {
+  //       default: () => h(Home),
+  //     });
+  //   },
+  // },
   {
     label: "全局设置",
     key: "setting",

@@ -22,12 +22,18 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue';
+import { storeToRefs } from "pinia";
 import { mainStore } from "@/store";
 import Provider from "@/components/Provider.vue";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 
 const store = mainStore();
+
+const {
+  siteTheme,
+} = storeToRefs(store);
 
 // 顶栏显隐
 const headerShow = ref(false);
@@ -36,6 +42,23 @@ const headerShow = ref(false);
 const backTopChange = (val) => {
   headerShow.value = val;
 };
+
+const setStatusBarColor = (theme) => {
+  const element = document.getElementById("status-bar-meta");
+  if (theme && element) {
+    if (theme === "light") {
+      element.style.color = "rgb(250 250 252)";
+    } else if (theme === "dark" && element) {
+      element.style.color = "rgb(16 16 20)";
+    }
+    console.log("theme为：",theme)
+    console.log("已设置状态栏颜色为：", element.style.color)
+  }
+};
+
+watch(siteTheme, (newVal) => {
+  setStatusBarColor(newVal);
+});
 
 onMounted(() => {
   store.checkNewsUpdate();
