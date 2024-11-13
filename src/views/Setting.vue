@@ -62,7 +62,9 @@
             }"
           >
             <n-text :style="{ fontSize: listFontSize + 'px' }">
-              我是将要显示的文字的大小
+              示意文本：<br>
+              <li>临兵斗者皆阵列前行</li>
+              <li>青龙与我左，白虎待我右，朱雀护我前，玄武敬我后，四方四神将，将我元神护。剑指，开！</li>
             </n-text>
           </n-card>
         </div>
