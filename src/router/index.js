@@ -8,7 +8,7 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
-  if (to.path === "/clearCache") {
+  if (to.path === "/clean") {
     console.log(`开始清理缓存`);
     const cacheNames = await caches.keys();
     if (cacheNames.length > 0) {

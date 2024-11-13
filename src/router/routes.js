@@ -1,8 +1,3 @@
-// import Vue from 'vue';
-// import VueRouter from 'vue-router';
-
-// Vue.use(VueRouter);
-
 const routes = [
   // 首页
   {
@@ -42,8 +37,8 @@ const routes = [
   },
   // 清空缓存
   {
-    path: "/clearCache",
-    name: "clearCache",
+    path: "/clean",
+    name: "clean",
     meta: {
       title: "清空缓存",
     },
