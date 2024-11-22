@@ -47,9 +47,9 @@ const setStatusBarColor = (theme) => {
   const element = document.getElementById("status-bar-meta");
   if (theme && element) {
     if (theme === "light") {
-      element.content = "rgb(250 250 252)";
+      element.content = "#fafafc";
     } else if (theme === "dark" && element) {
-      element.content = "rgb(16 16 20)";
+      element.content = "#101014";
     }
     console.log("theme为：",theme)
     console.log("已设置状态栏颜色为：", element.content)
