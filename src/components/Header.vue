@@ -58,13 +58,13 @@
           </n-popover>
           <n-popover>
             <template #trigger>
-              <n-button secondary strong round @click="openGuoleFun">
+              <n-button secondary strong round @click="router.push('/')">
                 <template #icon>
                   <n-icon :component="Home" />
                 </template>
               </n-button>
             </template>
-            回到主页
+            回到首页
           </n-popover>
           <n-popover>
             <template #trigger>
