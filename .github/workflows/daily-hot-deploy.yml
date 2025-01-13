@@ -17,11 +17,6 @@ jobs:
       run: |
         rm -f package-lock.json
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-
     - name: Install package
       run: |
         npm install
@@ -30,9 +25,15 @@ jobs:
       run: |
         npm run build
 
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
     - name: Install tencent cloud coscmd
       run: |
-        sudo pip install coscmd
+        python -m pip install --upgrade pip
+        pip install coscmd
 
     - name: Configuration tencent cloud coscmd
       env:
