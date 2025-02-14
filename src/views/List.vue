@@ -373,6 +373,7 @@ onMounted(() => {
 
         .item {
           display: flex;
+          align-items: center;
         }
 
         .desc {
@@ -384,14 +385,15 @@ onMounted(() => {
         }
 
         .hot-text {
-          font-size: 11px;
-          line-height: 1;
+          font-size: 12px;
           color: #fff;
           margin-left: 10px;
-          padding: 0px 4px;
+          padding: 1px;
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          line-height: 16px;
           border-radius: 4px;
-          display: flex;
-          align-items: center;
           text-align: center;
         }
 
@@ -428,7 +430,7 @@ onMounted(() => {
         }
 
         .hot-text.fei {
-          background-color: #c50000;
+          background-color: #f86400;
         }
       }
 
