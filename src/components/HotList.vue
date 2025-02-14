@@ -1,21 +1,10 @@
 <template>
-  <n-card
-    :header-style="{ padding: '16px' }"
-    :content-style="{ padding: '0 16px' }"
-    :footer-style="{ padding: '16px' }"
-    :id="`hot-list-${hotData.name}`"
-    class="hot-list"
-    hoverable
-    @click="toList"
-  >
+  <n-card :header-style="{ padding: '16px' }" :content-style="{ padding: '0 16px' }" :footer-style="{ padding: '16px' }"
+    :id="`hot-list-${hotData.name}`" class="hot-list" hoverable @click="toList">
     <template #header>
       <n-space class="title" justify="space-between">
         <div class="name">
-          <n-avatar
-            class="ico"
-            :src="`/logo/${hotData.name}.png`"
-            fallback-src="/ico/icon_error.png"
-          />
+          <n-avatar class="ico" :src="`/logo/${hotData.name}.png`" fallback-src="/ico/icon_error.png" />
           <n-text class="name-text">{{ hotData.label }}</n-text>
         </div>
         <n-text v-if="hotListData?.type" class="subtitle" :depth="2">
@@ -27,20 +16,8 @@
     <n-scrollbar class="news-list" ref="scrollbarRef">
       <Transition name="fade" mode="out-in">
         <div v-if="loadingError" class="error">
-          <n-result
-            size="small"
-            status="500"
-            title="哎呀，加载失败了"
-            description="生活总会遇到不如意的事情"
-            style="margin-top: 40px"
-          />
-          <n-button
-            size="small"
-            secondary
-            strong
-            round
-            @click.stop="getHotListsData(hotData.name)"
-          >
+          <n-result size="small" status="500" title="哎呀，加载失败了" description="生活总会遇到不如意的事情" style="margin-top: 40px" />
+          <n-button size="small" secondary strong round @click.stop="getHotListsData(hotData.name)">
             <template #icon>
               <n-icon :component="Refresh" />
             </template>
@@ -51,32 +28,30 @@
           <n-skeleton text round :repeat="10" height="20px" />
         </div>
         <div v-else class="lists" :id="hotData.name + 'Lists'">
-          <div
-            class="item"
-            v-for="(item, index) in hotListData.data.slice(0, 15)"
-            :key="item"
-          >
-            <n-text
-              class="num"
-              :class="
-                index === 0
-                  ? 'one'
-                  : index === 1
+          <div class="item" v-for="(item, index) in hotListData.data.slice(0, 15)" :key="item">
+            <n-text class="num" :class="index === 0
+                ? 'one'
+                : index === 1
                   ? 'two'
                   : index === 2
-                  ? 'three'
-                  : null
-              "
-              :depth="2"
-              >{{ index + 1 }}</n-text
-            >
-            <n-text
-              :style="{ fontSize: store.listFontSize + 'px' }"
-              class="text"
-              @click.stop="jumpLink(item)"
-            >
+                    ? 'three'
+                    : null
+              " :depth="2">{{ index + 1 }}</n-text>
+            <n-text :style="{ fontSize: store.listFontSize + 'px' }" class="text" @click.stop="jumpLink(item)">
               {{ item.title }}
             </n-text>
+            <n-text v-if="item.text" :class="{
+              'hot-text': true,
+              'new': item.text === '新',
+              'film': item.text === '影',
+              'tv': item.text === '剧',
+              'zong': item.text === '综',
+              'music': item.text === '音',
+              'boom': item.text === '爆',
+              'hot': item.text === '热',
+              'fei': item.text === '沸',
+              'warm': item.text === '暖',
+            }" :depth="3" v-html="item.text" />
           </div>
         </div>
       </Transition>
@@ -97,13 +72,7 @@
             <n-space class="controls">
               <n-popover v-if="hotListData.data.length > 15">
                 <template #trigger>
-                  <n-button
-                    size="tiny"
-                    secondary
-                    strong
-                    round
-                    @click.stop="toList"
-                  >
+                  <n-button size="tiny" secondary strong round @click.stop="toList">
                     <template #icon>
                       <n-icon :component="More" />
                     </template>
@@ -113,13 +82,7 @@
               </n-popover>
               <n-popover>
                 <template #trigger>
-                  <n-button
-                    size="tiny"
-                    secondary
-                    strong
-                    round
-                    @click.stop="getNewData"
-                  >
+                  <n-button size="tiny" secondary strong round @click.stop="getNewData">
                     <template #icon>
                       <n-icon :component="Refresh" />
                     </template>
@@ -269,14 +232,17 @@ onMounted(() => {
   border-radius: 12px;
   transition: all 0.3s;
   cursor: pointer;
+
   .title {
     display: flex;
     align-items: center;
     font-size: 16px;
     height: 26px;
+
     .name {
       display: flex;
       align-items: center;
+
       .n-avatar {
         background-color: transparent;
         width: 20px;
@@ -314,6 +280,7 @@ onMounted(() => {
       display: flex;
       flex-direction: column;
       align-items: center;
+
       .n-button {
         margin-top: 12px;
       }
@@ -344,17 +311,66 @@ onMounted(() => {
         margin-bottom: 0;
       }
 
+      .hot-text {
+        font-size: 12px;
+        color: #fff;
+        margin-left: 2px;
+        padding: 1px;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        border-radius: 4px;
+        text-align: center;
+      }
+
+      .hot-text.new {
+        background-color: #ff3852;
+      }
+
+      .hot-text.warm {
+        background-color: #ffab5a;
+      }
+
+      .hot-text.film {
+        background-color: #3e778a;
+      }
+
+      .hot-text.tv {
+        background-color: #837600;
+      }
+
+      .hot-text.zong {
+        background-color: #ffc000;
+      }
+
+      .hot-text.music {
+        background-color: #f9455c;
+      }
+
+      .hot-text.boom {
+        background-color: #c50000;
+      }
+
+      .hot-text.hot {
+        background-color: #ff9406;
+      }
+
+      .hot-text.fei {
+        background-color: #f86400;
+      }
+
       .num {
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
+        width: 20px;
+        height: 20px;
+        min-width: 18px;
         margin-right: 8px;
         font-size: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         background-color: var(--n-border-color);
-        border-radius: 8px;
+        border-radius: 6px;
         transition: all 0.3s;
 
         &:hover {
