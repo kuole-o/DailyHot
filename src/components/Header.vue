@@ -225,7 +225,7 @@ const menuOptionsSelect = (val) => {
 watch(
   () => router.currentRoute.value,
   (val) => {
-    const isHome = val.path === "/";
+    const isHome = val.path === "/" || "/list";
     showRefresh.value = isHome ? true : false;
   }
 );
