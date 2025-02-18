@@ -41,44 +41,33 @@
       <Transition name="fade" mode="out-in">
         <template v-if="!listData">
           <div class="loading" style="flex-direction: column">
-            <n-skeleton text round :repeat="20" height="40px" style="margin-bottom: 20px" />
+            <n-skeleton text round :repeat=pageSize height="40px" style="margin-bottom: 20px" />
           </div>
         </template>
         <template v-else>
           <div class="all">
             <n-list hoverable clickable style="width: 100%">
               <n-list-item v-for="(item, index) in listData.data.slice(
-                pageNumber * 20 - 20,
-                pageNumber * 20
+                pageNumber * pageSize - pageSize,
+                pageNumber * pageSize
               )" :key="item" @click="jumpLink(item)">
                 <template #prefix>
-                  <n-text class="num" :class="index + 1 + (pageNumber - 1) * 20 === 1
+                  <n-text class="num" :class="index + 1 + (pageNumber - 1) * pageSize === 1
                     ? 'one'
-                    : index + 1 + (pageNumber - 1) * 20 === 2
+                    : index + 1 + (pageNumber - 1) * pageSize === 2
                       ? 'two'
-                      : index + 1 + (pageNumber - 1) * 20 === 3
+                      : index + 1 + (pageNumber - 1) * pageSize === 3
                         ? 'three'
                         : null
                     " :depth="2">
-                    {{ index + 1 + (pageNumber - 1) * 20 }}
+                    {{ index + 1 + (pageNumber - 1) * pageSize }}
                   </n-text>
                 </template>
                 <div class="text">
                   <n-text class="title" v-html="item.title" />
                   <div class="item" v-if="item.desc || item.text">
-                    <n-text v-if="item.desc" class="desc" :depth="3" v-html="item.desc" />
-                    <n-text v-if="item.text" :class="{
-                      'hot-text': true,
-                      'new': item.text === '新',
-                      'film': item.text === '影',
-                      'tv': item.text === '剧',
-                      'zong': item.text === '综',
-                      'music': item.text === '音',
-                      'boom': item.text === '爆',
-                      'hot': item.text === '热',
-                      'fei': item.text === '沸',
-                      'warm': item.text === '暖',
-                    }" :depth="3" v-html="item.text" />
+                    <n-text v-if="item.desc && item.desc != '-'" class="desc" :depth="3" v-html="item.desc" />
+                    <n-text v-if="item.text" :class="getTextClass(item.text)" :depth="3" v-html="item.text" />
                   </div>
                 </div>
                 <!-- <div class="message">
@@ -89,8 +78,8 @@
                 </div> -->
               </n-list-item>
             </n-list>
-            <n-pagination class="pagination" :page-slot="5" :item-count="listData.data.length" :page-sizes="[20]"
-              v-model:page="pageNumber" />
+            <n-pagination class="pagination" :page-slot="5" :item-count="listData.data.length"
+              :page-sizes="[10, 20, 30, 50, 100]" v-model:page="pageNumber" v-model:page-size="pageSize" show-size-picker />
           </div>
         </template>
       </Transition>
@@ -104,6 +93,7 @@ import { mainStore } from "@/store";
 import { useRouter } from "vue-router";
 import { formatTime } from "@/utils/getTime";
 import { getHotLists } from "@/api";
+import { debounce } from '@/utils/debounce';
 
 const router = useRouter();
 const store = mainStore();
@@ -117,16 +107,52 @@ const pageNumber = ref(
     ? Number(router.currentRoute.value.query.page)
     : 1
 );
+const pageSize = ref(
+  router.currentRoute.value.query.pageSize
+    ? Number(router.currentRoute.value.query.pageSize)
+    : 20
+);
 const listData = ref(null);
+
+// 获取文本类名
+const getTextClass = (text) => {
+  return {
+    'hot-text': true,
+    'new': text === '新',
+    'film': text === '影',
+    'tv': text === '剧',
+    'zong': text === '综',
+    'music': text === '音',
+    'boom': text === '爆',
+    'hot': text === '热',
+    'fei': text === '沸',
+    'warm': text === '暖',
+  };
+};
 
 // 获取热榜数据
 const getHotListsData = async (name, isNew = false) => {
+  const now = Date.now();
+  const cacheKey = name;
+
+  // 从本地存储获取缓存数据
+  const cachedData = JSON.parse(localStorage.getItem(cacheKey));
+  if (cachedData && (now - new Date(cachedData.updateTime).getTime()) <= 5 * 60 * 1000) {
+    listData.value = cachedData;
+    console.log(`使用本地缓存数据：${cacheKey}`);
+    return
+  }
+
+  // 无缓存或已过期时请求数据
   listData.value = null;
   const item = store.newsArr.find((item) => item.name == name)
   getHotLists(item.name, isNew, item.params).then((res) => {
     console.log(res);
     if (res.code === 200) {
+      // 更新缓存
+      localStorage.setItem(cacheKey, JSON.stringify(res));
       listData.value = res;
+      console.log(`使用网络请求获取数据并缓存：${cacheKey}`)
     } else {
       $message.error(res.message);
     }
@@ -151,6 +177,7 @@ const changeType = (type) => {
     query: {
       type,
       page: 1,
+      pageSize: pageSize.value || 20,
     },
   });
 };
@@ -165,36 +192,59 @@ watch(
   }
 );
 
-// 页数变化
-watch(
-  () => pageNumber.value,
-  (val) => {
-    router.push({
-      path: "/list",
-      query: {
-        type: listType.value,
-        page: val,
-      },
-    });
-    document.querySelector(".n-back-top")?.click();
-  }
-);
-
-// 类别变化
-watch(
-  () => router.currentRoute.value,
-  (val) => {
-    if (val.name === "list") {
-      listType.value = val.query.type;
-      pageNumber.value = Number(val.query.page);
-      getHotListsData(listType.value);
+// 防抖路由更新（300ms延迟）
+const updateRoute = debounce(() => {
+  router.push({
+    path: "/list",
+    query: {
+      type: listType.value,
+      page: pageNumber.value,
+      pageSize: pageSize.value
     }
+  })
+  document.querySelector(".n-back-top")?.click()
+}, 300)
+
+// 深度监听参数对象
+watch(
+  () => ({
+    type: listType.value,
+    page: pageNumber.value,
+    size: pageSize.value
+  }),
+  (newVal, oldVal) => {
+    if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+      // 当 pageSize 改变时，重置 pageNumber 为 1
+      if (newVal.size !== oldVal.size) {
+        pageNumber.value = 1;
+      }
+      updateRoute();
+    }
+  },
+  { deep: true }
+)
+
+// 路由变化监听
+watch(() => router.currentRoute.value, (newRoute) => {
+  if (newRoute.name === "list") {
+    const query = newRoute.query
+    listType.value = query.type || store.newsArr[0].name
+    pageNumber.value = Math.max(1, Number(query.page) || 1)
+    pageSize.value = [10, 20, 30, 50, 100].includes(Number(query.pageSize))
+      ? Number(query.pageSize)
+      : 20
+    getHotListsData(listType.value)
   }
-);
+})
 
 onMounted(() => {
   getHotListsData(listType.value);
 });
+
+// 组件卸载时取消防抖
+onUnmounted(() => {
+  updateRoute.cancel()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -230,6 +280,13 @@ onMounted(() => {
     .loading {
       display: flex;
       align-items: center;
+    }
+
+    :deep(.n-card-header) {
+      @media (max-width: 740px) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
     }
 
     :deep(.n-card__content) {
@@ -298,6 +355,7 @@ onMounted(() => {
       @media (max-width: 740px) {
         display: flex;
         justify-content: flex-start;
+        padding: 12px 8px 12px 16px;
 
         .item {
           .logo {
@@ -331,16 +389,16 @@ onMounted(() => {
       align-items: center;
 
       .num {
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
+        width: max-content;
+        height: 20px;
+        min-width: 20px;
         margin-right: 8px;
         font-size: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         background-color: var(--n-border-color);
-        border-radius: 8px;
+        border-radius: 6px;
         transition: all 0.3s;
 
         &:hover {
@@ -468,6 +526,10 @@ onMounted(() => {
       @media (min-width: 768px) {
         :deep(.n-list-item) {
           padding: 18px 0px 18px 6px;
+
+          .n-list-item__prefix {
+            margin-right: 14px;
+          }
         }
       }
     }

@@ -7,6 +7,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 
 export default defineConfig(({ mode }) => {
+  const isProduction = mode === 'production';
   return {
     base: loadEnv(mode, process.cwd())["VITE_DIR"],
     plugins: [
@@ -116,7 +117,7 @@ export default defineConfig(({ mode }) => {
       minify: "terser",
       terserOptions: {
         compress: {
-          pure_funcs: ["console.log"],
+          pure_funcs: isProduction ? ["console.log"] : [],
         },
       },
     },

@@ -29,29 +29,11 @@
         </div>
         <div v-else class="lists" :id="hotData.name + 'Lists'">
           <div class="item" v-for="(item, index) in hotListData.data.slice(0, 15)" :key="item">
-            <n-text class="num" :class="index === 0
-                ? 'one'
-                : index === 1
-                  ? 'two'
-                  : index === 2
-                    ? 'three'
-                    : null
-              " :depth="2">{{ index + 1 }}</n-text>
+            <n-text class="num" :class="getIndexClass(index)" :depth="2">{{ index + 1 }}</n-text>
             <n-text :style="{ fontSize: store.listFontSize + 'px' }" class="text" @click.stop="jumpLink(item)">
               {{ item.title }}
             </n-text>
-            <n-text v-if="item.text" :class="{
-              'hot-text': true,
-              'new': item.text === '新',
-              'film': item.text === '影',
-              'tv': item.text === '剧',
-              'zong': item.text === '综',
-              'music': item.text === '音',
-              'boom': item.text === '爆',
-              'hot': item.text === '热',
-              'fei': item.text === '沸',
-              'warm': item.text === '暖',
-            }" :depth="3" v-html="item.text" />
+            <n-text v-if="item.text" :class="getTextClass(item.text)" :depth="3" v-html="item.text" />
           </div>
         </div>
       </Transition>
@@ -132,18 +114,32 @@ const loadingError = ref(false);
 // 获取热榜数据
 const getHotListsData = async (name, isNew = false) => {
   try {
+    const now = Date.now();
+    const cacheKey = name;
+
+    // 从本地存储获取缓存数据
+    const cachedData = JSON.parse(localStorage.getItem(cacheKey));
+    if (!isNew && cachedData && (now - new Date(cachedData.updateTime).getTime()) <= 5 * 60 * 1000) {
+      listLoading.value = false;
+      hotListData.value = cachedData;
+      console.log(`使用本地缓存数据：${cacheKey}`);
+      scrollToTop();
+      return
+    }
+
+    // 无缓存或已过期时请求数据
     // hotListData.value = null;
     loadingError.value = false;
     const item = store.newsArr.find((item) => item.name == name);
     const result = await getHotLists(item.name, isNew, item.params);
     // console.log(result);
     if (result.code === 200) {
+      // 更新缓存
+      localStorage.setItem(cacheKey, JSON.stringify(result));
+      console.log(`使用网络请求获取数据并缓存：${cacheKey}`)
       listLoading.value = false;
       hotListData.value = result;
-      // 滚动至顶部
-      if (scrollbarRef.value) {
-        scrollbarRef.value.scrollTo({ position: "top", behavior: "smooth" });
-      }
+      scrollToTop();
     } else {
       loadingError.value = true;
       $message.error(result.title + result.message);
@@ -193,6 +189,34 @@ const toList = () => {
   } else {
     $message.error("数据出错，请重试");
   }
+};
+
+// 滚动到顶部
+const scrollToTop = () => {
+  if (scrollbarRef.value) {
+    scrollbarRef.value.scrollTo({ position: "top", behavior: "smooth" });
+  }
+};
+
+// 获取索引类名
+const getIndexClass = (index) => {
+  return index === 0 ? 'one' : index === 1 ? 'two' : index === 2 ? 'three' : null;
+};
+
+// 获取文本类名
+const getTextClass = (text) => {
+  return {
+    'hot-text': true,
+    'new': text === '新',
+    'film': text === '影',
+    'tv': text === '剧',
+    'zong': text === '综',
+    'music': text === '音',
+    'boom': text === '爆',
+    'hot': text === '热',
+    'fei': text === '沸',
+    'warm': text === '暖',
+  };
 };
 
 // 判断列表是否显示
