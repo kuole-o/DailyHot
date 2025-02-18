@@ -420,6 +420,12 @@ onUnmounted(() => {
           color: #fff;
         }
       }
+      .num.one,
+      .num.two,
+      .num.three {
+        width: 18px;
+        min-width: unset;
+      }
 
       .text {
         display: flex;
