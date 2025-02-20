@@ -44,15 +44,12 @@ const backTopChange = (val) => {
 };
 
 const setStatusBarColor = (theme) => {
-  const element = document.getElementById("status-bar-meta");
-  if (theme && element) {
-    if (theme === "light") {
-      element.content = "#fafafc";
-    } else if (theme === "dark" && element) {
-      element.content = "#101014";
-    }
-    console.log("theme为：",theme)
-    console.log("已设置状态栏颜色为：", element.content)
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  const color = theme === "light" ? '#fafafc' : '#101014';
+  document.documentElement.setAttribute('data-theme', theme === "light" ? 'light' : 'dark');
+
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute('content', color);
   }
 };
 
@@ -68,6 +65,7 @@ onMounted(() => {
       store.newsArr = store.defaultNewsArr;
     }
   });
+  setStatusBarColor(siteTheme.value);
 });
 </script>
 
