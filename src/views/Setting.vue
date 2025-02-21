@@ -11,7 +11,6 @@
           class="set"
           v-model:value="siteTheme"
           :options="themeOptions"
-          @update:value="siteThemeAuto = false"
         />
       </div>
     </n-card>
@@ -226,7 +225,7 @@ const saveSoreData = (name = null, open = false) => {
 // 重置数据
 const reset = () => {
   if (typeof $timeInterval !== "undefined") clearInterval($timeInterval);
-  localStorage.clear();
+  localStorage.removeItem("mainData");
   showSuccessNotification("重置配置项成功，页面即将刷新…");
   setTimeout(() => {
     location.reload();
@@ -237,7 +236,7 @@ const reset = () => {
 const clearCache = async () => {
   const cacheNames = await caches.keys();
 
-  if (cacheNames.length === 0) {
+  if (cacheNames.length === 0 && localStorage.length === 0) {
     showWarningNotification("本地缓存数据为空，无需清理");
     return;
   }
@@ -248,6 +247,7 @@ const clearCache = async () => {
       console.log(`以下缓存已清空：${cacheName}`);
     })
   );
+  localStorage.clear();
   showSuccessNotification("清空本地缓存成功");
 };
 
