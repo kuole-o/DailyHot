@@ -178,7 +178,7 @@ export const mainStore = defineStore("mainData", {
         showIcon: false,
       });
       this.siteTheme = val;
-      this.siteThemeAuto = false;
+      // this.siteThemeAuto = false;
     },
     // 检查更新
     checkNewsUpdate() {
