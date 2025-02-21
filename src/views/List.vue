@@ -107,11 +107,20 @@ const pageNumber = ref(
     ? Number(router.currentRoute.value.query.page)
     : 1
 );
-const pageSize = ref(
-  router.currentRoute.value.query.pageSize
-    ? Number(router.currentRoute.value.query.pageSize)
-    : 20
-);
+
+const loadPageSize = () => {
+  const queryPageSize = Number(router.currentRoute.value.query.pageSize);
+  const storedPageSize = Number(localStorage.getItem('pageSize'));
+  let size = [10, 20, 30, 50, 100].includes(queryPageSize) ? queryPageSize : [10, 20, 30, 50, 100].includes(storedPageSize) ? storedPageSize : 20;
+
+  if (queryPageSize && queryPageSize !== storedPageSize) {
+    localStorage.setItem('pageSize', size)
+  }
+
+  return size
+};
+
+const pageSize = ref(loadPageSize());
 const listData = ref(null);
 
 // 获取文本类名
@@ -177,7 +186,7 @@ const changeType = (type) => {
     query: {
       type,
       page: 1,
-      pageSize: pageSize.value || 20,
+      pageSize: loadPageSize()
     },
   });
 };
@@ -217,6 +226,9 @@ watch(
       // 当 pageSize 改变时，重置 pageNumber 为 1
       if (newVal.size !== oldVal.size) {
         pageNumber.value = 1;
+        if ([10, 20, 30, 50, 100].includes(newVal.size)) {
+          localStorage.setItem("pageSize", newVal.size)
+        }
       }
       updateRoute();
     }
@@ -230,9 +242,7 @@ watch(() => router.currentRoute.value, (newRoute) => {
     const query = newRoute.query
     listType.value = query.type || store.newsArr[0].name
     pageNumber.value = Math.max(1, Number(query.page) || 1)
-    pageSize.value = [10, 20, 30, 50, 100].includes(Number(query.pageSize))
-      ? Number(query.pageSize)
-      : 20
+    pageSize.value = loadPageSize()
     getHotListsData(listType.value)
   }
 })
