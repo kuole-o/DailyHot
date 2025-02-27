@@ -57,8 +57,8 @@ watch(siteTheme, (newVal) => {
   setStatusBarColor(newVal);
 });
 
-onMounted(() => {
-  store.checkNewsUpdate();
+onMounted(async () => {
+  await store.checkNewsUpdate();
   // 写入默认
   nextTick(() => {
     if (store.newsArr.length === 0) {

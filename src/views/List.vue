@@ -66,7 +66,7 @@
                 <div class="text">
                   <n-text class="title" v-html="item.title" />
                   <div class="item" v-if="item.desc || item.text">
-                    <n-text v-if="item.desc && item.desc != '-'" class="desc" :depth="3" v-html="item.desc" />
+                    <n-text v-if="remove_outliers(item.desc)" class="desc" :depth="3" v-html="item.desc" />
                     <n-text v-if="item.text" :class="getTextClass(item.text)" :depth="3" v-html="item.text" />
                   </div>
                 </div>
@@ -139,6 +139,12 @@ const getTextClass = (text) => {
   };
 };
 
+// 剔除异常数据
+const remove_outliers = (text) => {
+  const outliers = ['-', '该视频暂无简介']
+  return outliers.includes(text) ? false : true
+};
+
 // 获取热榜数据
 const getHotListsData = async (name, isNew = false) => {
   const now = Date.now();
@@ -155,6 +161,7 @@ const getHotListsData = async (name, isNew = false) => {
   // 无缓存或已过期时请求数据
   listData.value = null;
   const item = store.newsArr.find((item) => item.name == name)
+  console.log(item.params)
   getHotLists(item.name, isNew, item.params).then((res) => {
     console.log(res);
     if (res.code === 200) {
