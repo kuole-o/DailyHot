@@ -276,6 +276,7 @@ onUnmounted(() => {
         height: 22px;
         width: 22px;
         margin-left: 6px;
+        border-radius: 4px;
       }
     }
   }
@@ -330,6 +331,7 @@ onUnmounted(() => {
           img {
             height: 50px;
             width: 50px;
+            border-radius: 12px;
           }
         }
 
@@ -379,6 +381,7 @@ onUnmounted(() => {
             img {
               width: 32px;
               height: 32px;
+              border-radius: 8px;
             }
           }
 

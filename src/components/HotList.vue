@@ -272,6 +272,9 @@ onMounted(() => {
         width: 20px;
         height: 20px;
         margin-right: 8px;
+        img {
+          border-radius: 4px;
+        }
       }
     }
 
