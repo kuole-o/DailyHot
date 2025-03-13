@@ -267,7 +267,7 @@ const showWarningNotification = (message) => {
   .title {
     margin-top: 30px;
     margin-bottom: 20px;
-    font-size: 40px;
+    font-size: 32px;
     font-weight: bold;
   }
 

@@ -5,6 +5,7 @@ const routes = [
     name: "home",
     meta: {
       title: "首页",
+      class: "home",
     },
     component: () => import("@/views/Home.vue"),
   },
@@ -14,6 +15,7 @@ const routes = [
     name: "list",
     meta: {
       title: "新闻列表",
+      class: "list",
     },
     component: () => import("@/views/List.vue"),
   },
@@ -23,6 +25,7 @@ const routes = [
     name: "setting",
     meta: {
       title: "全局设置",
+      class: "setting",
     },
     component: () => import("@/views/Setting.vue"),
   },
@@ -32,6 +35,7 @@ const routes = [
     name: "test",
     meta: {
       title: "test",
+      class: "test",
     },
     component: () => import("@/views/Test.vue"),
   },
@@ -41,6 +45,7 @@ const routes = [
     name: "clean",
     meta: {
       title: "清空缓存",
+      class: "clean",
     },
   },
   // 403

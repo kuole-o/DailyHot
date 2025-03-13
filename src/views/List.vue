@@ -111,7 +111,7 @@ const pageNumber = ref(
 const loadPageSize = () => {
   const queryPageSize = Number(router.currentRoute.value.query.pageSize);
   const storedPageSize = Number(localStorage.getItem('pageSize'));
-  let size = [10, 20, 30, 50, 100].includes(queryPageSize) ? queryPageSize : [10, 20, 30, 50, 100].includes(storedPageSize) ? storedPageSize : 20;
+  let size = [10, 20, 30, 50, 100].includes(queryPageSize) ? queryPageSize : [10, 20, 30, 50, 100].includes(storedPageSize) ? storedPageSize : 30;
 
   if (queryPageSize && queryPageSize !== storedPageSize) {
     localStorage.setItem('pageSize', size)
@@ -266,6 +266,9 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .list {
+  :deep(.n-card > .n-card-header) {
+    padding: var(--n-padding-top) var(--n-padding-left) 10px var(--n-padding-left);
+  }
   .type {
     width: 100%;
 
@@ -301,14 +304,14 @@ onUnmounted(() => {
     }
 
     :deep(.n-card-header) {
-      @media (max-width: 740px) {
+      @media (max-width: 768px) {
         padding-left: 12px;
         padding-right: 12px;
       }
     }
 
     :deep(.n-card__content) {
-      @media (max-width: 740px) {
+      @media (max-width: 768px) {
         padding: 0 12px 12px 12px;
       }
     }
@@ -329,8 +332,8 @@ onUnmounted(() => {
           align-items: center;
 
           img {
-            height: 50px;
-            width: 50px;
+            height: 34px;
+            width: 34px;
             border-radius: 12px;
           }
         }
@@ -339,11 +342,11 @@ onUnmounted(() => {
           display: flex;
           align-items: center;
           flex-direction: column;
-          margin-left: 16px;
+          margin-left: 14px;
           line-height: 1;
 
           .title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
           }
 
@@ -371,7 +374,7 @@ onUnmounted(() => {
         }
       }
 
-      @media (max-width: 740px) {
+      @media (max-width: 768px) {
         display: flex;
         justify-content: flex-start;
         padding: 12px 8px 12px 16px;
@@ -539,7 +542,7 @@ onUnmounted(() => {
         margin: 20px 0;
       }
 
-      @media (max-width: 740px) {
+      @media (max-width: 768px) {
         :deep(.n-list-item) {
           padding: 12px 8px 12px 16px;
 
