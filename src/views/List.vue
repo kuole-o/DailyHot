@@ -25,9 +25,9 @@
                 </div>
                 <div class="name">
                   <n-text class="title">{{ listData.title }}</n-text>
-                  <!-- <n-text class="subtitle" :depth="3">
-                    {{ listData.subtitle }}
-                  </n-text> -->
+                  <n-text class="subtitle" :depth="3">
+                    {{ listData.type }}
+                  </n-text>
                 </div>
               </div>
               <div class="data">
@@ -341,7 +341,7 @@ onUnmounted(() => {
         .name {
           display: flex;
           align-items: center;
-          flex-direction: column;
+          flex-direction: row;
           margin-left: 14px;
           line-height: 1;
 
@@ -352,6 +352,7 @@ onUnmounted(() => {
 
           .subtitle {
             font-size: 14px;
+            margin-left: 14px;
           }
         }
       }
@@ -394,7 +395,7 @@ onUnmounted(() => {
             flex-direction: row;
 
             .subtitle {
-              margin-bottom: 3px;
+              margin-bottom: 2px;
               margin-left: 8px;
             }
           }
