@@ -271,6 +271,16 @@ onUnmounted(() => {
   }
   .type {
     width: 100%;
+    @media (max-width: 768px) {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      flex-flow: unset !important;
+      gap: 8px 6px !important;
+      white-space: nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+    }
 
     .tag {
       cursor: pointer;
@@ -287,6 +297,9 @@ onUnmounted(() => {
   .card {
     margin-top: 20px;
     border-radius: 8px;
+    @media (max-width: 768px) {
+      margin-top: 16px;
+    }
 
     .fade-enter-active,
     .fade-leave-active {
