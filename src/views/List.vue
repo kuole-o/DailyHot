@@ -298,7 +298,7 @@ onUnmounted(() => {
     margin-top: 20px;
     border-radius: 8px;
     @media (max-width: 768px) {
-      margin-top: 16px;
+      margin-top: 14px;
     }
 
     .fade-enter-active,
@@ -318,8 +318,7 @@ onUnmounted(() => {
 
     :deep(.n-card-header) {
       @media (max-width: 768px) {
-        padding-left: 12px;
-        padding-right: 12px;
+        padding: 30px 12px 4px 12px;
       }
     }
 
@@ -391,7 +390,8 @@ onUnmounted(() => {
       @media (max-width: 768px) {
         display: flex;
         justify-content: flex-start;
-        padding: 12px 8px 12px 16px;
+        padding: 0px 8px 0px 16px;
+        height: 40px;
 
         .item {
           .logo {
