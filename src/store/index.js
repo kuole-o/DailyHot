@@ -267,9 +267,18 @@ export const mainStore = defineStore("mainData", {
       timeData: null,
       // 字体大小
       listFontSize: 16,
+      // 当前屏幕宽度
+      innerWidth: null,
+      // 移动端状态
+      isMobile: null,
     };
   },
-  getters: {},
+  getters: {
+    // 获取页面宽度
+    getInnerWidth(state) {
+      return state.innerWidth;
+    }, 
+  },
   actions: {
     // 更改系统主题
     setSiteTheme(val) {
@@ -301,6 +310,15 @@ export const mainStore = defineStore("mainData", {
       } else {
         console.log("列表无内容，写入默认");
         this.newsArr = this.defaultNewsArr;
+      }
+    },
+    // 更改当前页面宽度
+    setInnerWidth(value) {
+      this.innerWidth = value;
+      if (value >= 768) {
+        this.isMobile = false;
+      } else {
+        this.isMobile = true;
       }
     },
   },

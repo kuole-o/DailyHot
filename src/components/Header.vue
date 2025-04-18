@@ -21,7 +21,7 @@
         </n-text>
       </div>
       <div class="current-time" v-else>
-        <n-text class="time">时间获取中</n-text>
+        <n-text class="time">获取中…</n-text>
       </div>
       <div class="controls">
         <n-space justify="end">

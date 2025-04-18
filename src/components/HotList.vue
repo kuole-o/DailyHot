@@ -241,7 +241,7 @@ watch(
   () => store.timeData,
   () => {
     if (hotListData.value) {
-      updateTime.value = formatTime(hotListData.value.updateTime);
+      updateTime.value = formatTime(hotListData.value.updateTime, false);
     }
   }
 );

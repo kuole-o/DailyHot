@@ -25,8 +25,8 @@
                 </div>
                 <div class="name">
                   <n-text class="title">{{ listData.title }}</n-text>
-                  <n-text class="subtitle" :depth="3">
-                    {{ listData.type }}
+                  <n-text v-if="!store.isMobile" class="subtitle" :depth="3">
+                    |&nbsp;&nbsp;{{ listData.type }}
                   </n-text>
                 </div>
               </div>
@@ -203,7 +203,7 @@ watch(
   () => store.timeData,
   () => {
     if (listData.value) {
-      updateTime.value = formatTime(listData.value.updateTime);
+      updateTime.value = formatTime(listData.value.updateTime, store.isMobile);
     }
   }
 );

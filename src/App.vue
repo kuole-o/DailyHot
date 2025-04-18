@@ -31,6 +31,11 @@ const {
   siteTheme,
 } = storeToRefs(store);
 
+// 页面宽度
+const getWidth = () => {
+  store.setInnerWidth(window.innerWidth);
+};
+
 // 顶栏显隐
 const headerShow = ref(false);
 
@@ -62,6 +67,8 @@ onMounted(async () => {
     }
   });
   setStatusBarColor(siteTheme.value);
+  getWidth();
+  window.addEventListener("resize", getWidth);
 });
 </script>
 
